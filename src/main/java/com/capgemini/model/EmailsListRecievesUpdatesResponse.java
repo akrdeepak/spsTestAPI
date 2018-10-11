@@ -3,10 +3,11 @@ package com.capgemini.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserFriandsListResponse {
+public class EmailsListRecievesUpdatesResponse {
+
 	
 	public String status;
-	public int count;
+	
 	public List<String> friends = new ArrayList<String>();
 	
 	
@@ -16,12 +17,7 @@ public class UserFriandsListResponse {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public int getCount() {
-		return count;
-	}
-	public void setCount(int count) {
-		this.count = count;
-	}
+	
 	public List<String> getFriends() {
 		return friends;
 	}
@@ -29,8 +25,4 @@ public class UserFriandsListResponse {
 		this.friends = friends;
 	}
 	
-	
-	
-	
-
 }

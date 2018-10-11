@@ -1,16 +1,19 @@
 package com.capgemini.model;
 
+import java.util.List;
+
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UserEmail {
+public class FriendListRequest {
 	
 	@NotNull 
-	@NotEmpty(message = "{createFriendEmail.notempty}") 
-	@Email(message = "{createFriendEmail.valid}")
-    @Size(max = 30, message = "{createFriendEmail.size}")
+	@NotEmpty(message = "{requestorEmail.notempty}") 
+	@Email(message = "{requestorEmail.valid}")
+	@Size(max = 30, message = "{requestorEmail.size}")
 	private String email;
 
 	public String getEmail() {
@@ -20,6 +23,5 @@ public class UserEmail {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 }
