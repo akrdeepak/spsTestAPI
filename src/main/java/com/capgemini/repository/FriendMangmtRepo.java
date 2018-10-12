@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -22,6 +24,8 @@ import com.capgemini.validation.FriendManagementValidation;
 
 @Repository
 public class FriendMangmtRepo {
+
+	private final Logger LOG = LoggerFactory.getLogger(getClass());
 
 	@Autowired
 	FriendManagementValidation fmError;
@@ -44,7 +48,8 @@ public class FriendMangmtRepo {
 	 * @param userReq
 	 * @return
 	 */
-	public FriendManagementValidation addNewFriendConnection(com.capgemini.model.UserRequest userReq) throws ResourceNotFoundException{
+	public FriendManagementValidation addNewFriendConnection(com.capgemini.model.UserRequest userReq)
+			throws ResourceNotFoundException {
 		try {
 
 			String requestor = userReq.getRequestor();
@@ -91,7 +96,7 @@ public class FriendMangmtRepo {
 				connectFriend(target, requestor);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.debug(e.getLocalizedMessage());;
 		}
 
 		return fmError;
@@ -110,7 +115,7 @@ public class FriendMangmtRepo {
 			throws ResourceNotFoundException {
 
 		UserFriendsListResponse emailListresponse = new UserFriendsListResponse();
-		System.out.println("----getFriendList-----" + friendListRequest.getEmail());
+		LOG.info("----getFriendList-----" + friendListRequest.getEmail());
 		String friendList = getFriendList(friendListRequest.getEmail());
 		if ("".equals(friendList) || friendList == null) {
 			emailListresponse.setStatus("Failed");
@@ -139,7 +144,8 @@ public class FriendMangmtRepo {
 	 * @param email2
 	 * @return
 	 */
-	public CommonFriendsListResponse retrieveCommonFriendList(String email1, String email2) throws ResourceNotFoundException {
+	public CommonFriendsListResponse retrieveCommonFriendList(String email1, String email2)
+			throws ResourceNotFoundException {
 		CommonFriendsListResponse commonFrndListresponse = new CommonFriendsListResponse();
 
 		String friendList1 = getFriendList(email1);
@@ -440,7 +446,7 @@ public class FriendMangmtRepo {
 		if (Arrays.asList(requestorFriends).contains(targetId) && Arrays.asList(targetFriends).contains(requestorId)) {
 			alreadyFriend = true;
 		}
-		System.out.println("alreadyFriend " + alreadyFriend);
+		LOG.info("alreadyFriend ... " + alreadyFriend);
 		return alreadyFriend;
 
 	}
@@ -483,11 +489,12 @@ public class FriendMangmtRepo {
 			String sqlrFriendList = "SELECT Subscription_Status FROM unsubscribe WHERE Requestor_email=? AND Target_email=?";
 			String Subscription_Status = (String) jdbcTemplate.queryForObject(sqlrFriendList,
 					new Object[] { requestor_email, target_email }, String.class);
-			System.out.println("Subscription_Status " + Subscription_Status);
+			LOG.info(":: Subscription_Status " + Subscription_Status);
 			if (Subscription_Status.equalsIgnoreCase("Blocked")) {
 				status = true;
 			}
 		} catch (Exception e) {
+			LOG.debug(e.getLocalizedMessage());
 
 		}
 		return status;
