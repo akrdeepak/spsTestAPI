@@ -24,7 +24,7 @@ public class ExceptionHandlerControllerAdvice {
 	public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception,
 			final HttpServletRequest request) {
 
-		ExceptionResponse error = new ExceptionResponse();
+		final ExceptionResponse error = new ExceptionResponse();
 		error.setErrorMessage(exception.getMessage());
 		error.callerURL(request.getRequestURI());
 
@@ -36,7 +36,7 @@ public class ExceptionHandlerControllerAdvice {
 	public @ResponseBody ExceptionResponse handleException(final Exception exception,
 			final HttpServletRequest request) {
 
-		ExceptionResponse error = new ExceptionResponse();
+		final ExceptionResponse error = new ExceptionResponse();
 		error.setErrorMessage(exception.getMessage());
 		error.callerURL(request.getRequestURI());
 
