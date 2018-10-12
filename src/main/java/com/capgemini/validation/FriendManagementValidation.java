@@ -8,7 +8,7 @@ public class FriendManagementValidation {
 	
 
 	String status;
-	String errorDescription;
+	String description;
 	
 	public String getStatus() {
 		return status;
@@ -19,11 +19,11 @@ public class FriendManagementValidation {
 	}
 
 	public String getErrorDescription() {
-		return errorDescription;
+		return description;
 	}
 
-	public void setErrorDescription(String errorDescription) {
-		this.errorDescription = errorDescription;
+	public void setErrorDescription(String description) {
+		this.description = description;
 	}
 	
 	public FriendManagementValidation() {
@@ -33,7 +33,7 @@ public class FriendManagementValidation {
 	public FriendManagementValidation(String status, String errorDescription) {
 		super();
 		this.status = status;
-		this.errorDescription = errorDescription;
+		this.description = errorDescription;
 	}
 	
 }
