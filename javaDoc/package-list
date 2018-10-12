@@ -1,0 +1,8 @@
+com.capgemini
+com.capgemini.controller
+com.capgemini.exceptionhandling
+com.capgemini.model
+com.capgemini.repository
+com.capgemini.service
+com.capgemini.swagger
+com.capgemini.validation
