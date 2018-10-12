@@ -73,7 +73,7 @@ public class FriendManagementController {
 			responseEntity = new ResponseEntity<FriendManagementValidation>(fmResponse, HttpStatus.OK);
 
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.debug(e.getLocalizedMessage());
 			responseEntity = new ResponseEntity<FriendManagementValidation>(fmResponse, HttpStatus.SERVICE_UNAVAILABLE);
 
 		}
@@ -106,7 +106,7 @@ public class FriendManagementController {
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.debug(e.getLocalizedMessage());
 			friendListResponseEntity = new ResponseEntity<UserFriendsListResponse>(response,
 					HttpStatus.SERVICE_UNAVAILABLE);
 
@@ -143,7 +143,7 @@ public class FriendManagementController {
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.debug(e.getLocalizedMessage());
 			commonFriendResponseEntity = new ResponseEntity<CommonFriendsListResponse>(response,
 					HttpStatus.SERVICE_UNAVAILABLE);
 
@@ -179,7 +179,7 @@ public class FriendManagementController {
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.debug(e.getLocalizedMessage());
 			subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv,
 					HttpStatus.SERVICE_UNAVAILABLE);
 		}
@@ -218,7 +218,7 @@ public class FriendManagementController {
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.debug(e.getLocalizedMessage());
 			unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv,
 					HttpStatus.BAD_REQUEST);
 		}
@@ -254,7 +254,7 @@ public class FriendManagementController {
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage());
+			LOG.debug(e.getLocalizedMessage());
 			responseEntity = new ResponseEntity<EmailsListRecievesUpdatesResponse>(response,
 					HttpStatus.SERVICE_UNAVAILABLE);
 
