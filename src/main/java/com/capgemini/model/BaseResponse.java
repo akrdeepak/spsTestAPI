@@ -1,4 +1,5 @@
 package com.capgemini.model;
+
 //import lombok.Data;
 //@Data
 public class BaseResponse {

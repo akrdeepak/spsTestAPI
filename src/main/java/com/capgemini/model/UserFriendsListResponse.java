@@ -5,8 +5,8 @@ import java.util.List;
 
 public class UserFriendsListResponse {
 	
-	public String status;
-	public int count;
+	private String status;
+	private int count;
 	public List<String> friends = new ArrayList<String>();
 	
 	
@@ -29,8 +29,4 @@ public class UserFriendsListResponse {
 		this.friends = friends;
 	}
 	
-	
-	
-	
-
 }

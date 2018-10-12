@@ -11,13 +11,13 @@ public class UserRequest {
 	@NotEmpty(message = "{requestorEmail.notempty}")
 	@Email(message = "{requestorEmail.valid}")
 	@Size(max = 30, message = "{requestorEmail.size}")
-	String requestor;
+	private String requestor;
 
 	@NotNull
 	@NotEmpty(message = "{targetEmail.notempty}")
 	@Email(message = "{targetEmail.valid}")
 	@Size(max = 30, message = "{targetEmail.size}")
-	String target;
+	private String target;
 
 	public String getRequestor() {
 		return requestor;

@@ -21,5 +21,4 @@ public class UserEmail {
 		this.email = email;
 	}
 
-
 }

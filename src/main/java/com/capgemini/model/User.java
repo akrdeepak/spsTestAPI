@@ -2,11 +2,9 @@ package com.capgemini.model;
 
 public class User {
 
-	 Integer id;
-	 String user_name;
-	 String user_email;
-	 
-	 
+	 private Integer id;
+	 private String user_name;
+	 private String user_email;
 	 
 	public User() {
 		super();
@@ -36,6 +34,5 @@ public class User {
 	public void setUser_email(String user_email) {
 		this.user_email = user_email;
 	}
-	 
 	 
 }

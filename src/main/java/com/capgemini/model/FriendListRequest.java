@@ -6,9 +6,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class FriendListRequest {
-	
-	@NotNull 
-	@NotEmpty(message = "{requestorEmail.notempty}") 
+
+	@NotNull
+	@NotEmpty(message = "{requestorEmail.notempty}")
 	@Email(message = "{requestorEmail.valid}")
 	@Size(max = 30, message = "{requestorEmail.size}")
 	private String email;
@@ -20,5 +20,4 @@ public class FriendListRequest {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 }
