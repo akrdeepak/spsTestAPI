@@ -43,8 +43,7 @@ public class ExceptionHandlerControllerAdvice {
 		return error;
 	}
 	
-	//-------------added for global email handling ----------
-	 @ExceptionHandler
+		@ExceptionHandler
 	    @ResponseBody
 	    @ResponseStatus(HttpStatus.BAD_REQUEST)
 	    public Map<String, Object> handle(MethodArgumentNotValidException exception) {
@@ -69,7 +68,4 @@ public class ExceptionHandlerControllerAdvice {
 	        return Collections.singletonMap("error", message);
 	    }
 	
-	
-	
-
 }
