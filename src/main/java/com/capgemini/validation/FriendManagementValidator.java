@@ -3,12 +3,15 @@ package com.capgemini.validation;
 import org.springframework.stereotype.Component;
 
 @Component
-public class FriendManagementValidation {
+public class FriendManagementValidator {
    
 	
 
 	String status;
 	String description;
+	
+
+	
 	
 	public String getStatus() {
 		return status;
@@ -18,19 +21,19 @@ public class FriendManagementValidation {
 		this.status = status;
 	}
 
-	public String getErrorDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setErrorDescription(String description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	public FriendManagementValidation() {
+
+	public FriendManagementValidator() {
 		
 	}
 	
-	public FriendManagementValidation(String status, String errorDescription) {
+	public FriendManagementValidator(String status, String errorDescription) {
 		super();
 		this.status = status;
 		this.description = errorDescription;

@@ -7,7 +7,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 @Configuration
-public class CustomValidationMessage{
+public class CustomMessageValidator{
 
 	@Bean
 	public MessageSource messageSource() {

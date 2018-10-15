@@ -15,29 +15,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.capgemini.exceptionhandling.ResourceNotFoundException;
 import com.capgemini.model.CommonFriendsListResponse;
 import com.capgemini.model.EmailsListRecievesUpdatesResponse;
 import com.capgemini.model.Subscriber;
-import com.capgemini.model.UserFriendsListResponse;
+import com.capgemini.model.FriendsStatus;
 import com.capgemini.service.FriendMangmtService;
-import com.capgemini.validation.FriendManagementValidation;
+import com.capgemini.user.exception.FriendManagementAPIResourceNotFound;
+import com.capgemini.validation.FriendManagementValidator;
 
 @RestController
 @Validated
 @EntityScan(basePackages = { "com.capgemini.model" })
 @RequestMapping(value = "/api")
-public class FriendManagementController {
+public class FriendMgmtAPIController {
 
 	private final Logger LOG = LoggerFactory.getLogger(getClass());
 	private static final String SUCCESS_STATUS = "Success";
 	private static final String ERROR_STATUS = "error";
 
 	public FriendMangmtService frndMngtServc;
-	FriendManagementValidation fmError;
+	FriendManagementValidator fmError;
 
 	@Autowired
-	public FriendManagementController(FriendMangmtService frndMngtServc, FriendManagementValidation fmError) {
+	public FriendMgmtAPIController(FriendMangmtService frndMngtServc, FriendManagementValidator fmError) {
 		this.frndMngtServc = frndMngtServc;
 		this.fmError = fmError;
 	}
@@ -47,17 +47,17 @@ public class FriendManagementController {
 	 * @param userReq
 	 * @param results
 	 * @return ResponseEntity
-	 * @throws ResourceNotFoundException
+	 * @throws FriendManagementAPIResourceNotFound
 	 */
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public ResponseEntity<FriendManagementValidation> newFriendConnection(
-			@Valid @RequestBody com.capgemini.model.UserRequest userReq, BindingResult results)
-			throws ResourceNotFoundException {
+	public ResponseEntity<FriendManagementValidator> newFriendConnection(
+			@Valid @RequestBody com.capgemini.model.AddFriend userReq, BindingResult results)
+			throws FriendManagementAPIResourceNotFound {
 		LOG.info("newFriendConnection :: ");
-		FriendManagementValidation fmResponse = new FriendManagementValidation();
+		FriendManagementValidator fmResponse = new FriendManagementValidator();
 		// BaseResponse baseResponse = new BaseResponse();
-		ResponseEntity<FriendManagementValidation> responseEntity = null;
+		ResponseEntity<FriendManagementValidator> responseEntity = null;
 		try {
 			fmResponse = frndMngtServc.addNewFriendConnection(userReq);
 			String isNewfrndMangmReqSuccess = fmResponse.getStatus();
@@ -66,15 +66,15 @@ public class FriendManagementController {
 
 			if (isNewfrndMangmReqSuccess.equalsIgnoreCase("Success")) {
 				fmResponse.setStatus(SUCCESS_STATUS);
-				responseEntity = new ResponseEntity<FriendManagementValidation>(fmResponse, HttpStatus.OK);
+				responseEntity = new ResponseEntity<FriendManagementValidator>(fmResponse, HttpStatus.OK);
 			} else {
 				fmResponse.setStatus(ERROR_STATUS);
 			}
-			responseEntity = new ResponseEntity<FriendManagementValidation>(fmResponse, HttpStatus.OK);
+			responseEntity = new ResponseEntity<FriendManagementValidator>(fmResponse, HttpStatus.OK);
 
 		} catch (Exception e) {
 			LOG.debug(e.getLocalizedMessage());
-			responseEntity = new ResponseEntity<FriendManagementValidation>(fmResponse, HttpStatus.SERVICE_UNAVAILABLE);
+			responseEntity = new ResponseEntity<FriendManagementValidator>(fmResponse, HttpStatus.SERVICE_UNAVAILABLE);
 
 		}
 
@@ -87,27 +87,27 @@ public class FriendManagementController {
 	 * @param friendListRequest
 	 * @param result
 	 * @return
-	 * @throws ResourceNotFoundException
+	 * @throws FriendManagementAPIResourceNotFound
 	 */
 	@RequestMapping(value = "/friendlist", method = RequestMethod.POST)
-	public ResponseEntity<UserFriendsListResponse> getFriendList(
+	public ResponseEntity<FriendsStatus> getFriendList(
 			@Valid @RequestBody com.capgemini.model.FriendListRequest friendListRequest, BindingResult result)
-			throws ResourceNotFoundException {
+			throws FriendManagementAPIResourceNotFound {
 		LOG.info("--getFriendList :: " + friendListRequest.getEmail());
-		UserFriendsListResponse response = frndMngtServc.getFriendList(friendListRequest);
-		ResponseEntity<UserFriendsListResponse> friendListResponseEntity = null;
+		FriendsStatus response = frndMngtServc.getFriendList(friendListRequest);
+		ResponseEntity<FriendsStatus> friendListResponseEntity = null;
 		try {
 			if (response.getStatus() == SUCCESS_STATUS) {
 				response.setStatus(SUCCESS_STATUS);
-				friendListResponseEntity = new ResponseEntity<UserFriendsListResponse>(response, HttpStatus.OK);
+				friendListResponseEntity = new ResponseEntity<FriendsStatus>(response, HttpStatus.OK);
 			} else {
 				response.setStatus(ERROR_STATUS);
-				friendListResponseEntity = new ResponseEntity<UserFriendsListResponse>(response,
+				friendListResponseEntity = new ResponseEntity<FriendsStatus>(response,
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
 			LOG.debug(e.getLocalizedMessage());
-			friendListResponseEntity = new ResponseEntity<UserFriendsListResponse>(response,
+			friendListResponseEntity = new ResponseEntity<FriendsStatus>(response,
 					HttpStatus.SERVICE_UNAVAILABLE);
 
 		}
@@ -120,13 +120,13 @@ public class FriendManagementController {
 	 * 
 	 * @param commonFrndReq
 	 * @return
-	 * @throws ResourceNotFoundException
+	 * @throws FriendManagementAPIResourceNotFound
 	 */
 
 	@RequestMapping(value = "/friends", method = RequestMethod.POST)
 	public ResponseEntity<CommonFriendsListResponse> getCommonFriendList(
 			@Valid @RequestBody com.capgemini.model.CommonFriendsListRequest commonFrndReq)
-			throws ResourceNotFoundException {
+			throws FriendManagementAPIResourceNotFound {
 		LOG.info("getCommonFriendList");
 		ResponseEntity<CommonFriendsListResponse> commonFriendResponseEntity = null;
 		CommonFriendsListResponse response = new CommonFriendsListResponse();
@@ -155,32 +155,32 @@ public class FriendManagementController {
 	 * @param subscriber
 	 * @param result
 	 * @return
-	 * @throws ResourceNotFoundException
+	 * @throws FriendManagementAPIResourceNotFound
 	 */
 	@RequestMapping(value = "/subscribe", method = RequestMethod.POST)
-	public ResponseEntity<FriendManagementValidation> subscribeFriend(
+	public ResponseEntity<FriendManagementValidator> subscribeFriend(
 			@Valid @RequestBody com.capgemini.model.Subscriber subscriber, BindingResult result)
-			throws ResourceNotFoundException {
+			throws FriendManagementAPIResourceNotFound {
 		LOG.info("Calling subscribe Friend ::");
 		// Validation
 		if (result.hasErrors()) {
 			return handleValidation(result);
 		}
 
-		ResponseEntity<FriendManagementValidation> subscribeFriendResponseEntity = null;
-		FriendManagementValidation fmv = new FriendManagementValidation();
+		ResponseEntity<FriendManagementValidator> subscribeFriendResponseEntity = null;
+		FriendManagementValidator fmv = new FriendManagementValidator();
 
 		try {
 			fmv = frndMngtServc.subscribeTargetFriend(subscriber);
 			if (fmv.getStatus() == SUCCESS_STATUS) {
-				subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv, HttpStatus.OK);
+				subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(fmv, HttpStatus.OK);
 			} else {
-				subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv,
+				subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(fmv,
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
 			LOG.debug(e.getLocalizedMessage());
-			subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv,
+			subscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(fmv,
 					HttpStatus.SERVICE_UNAVAILABLE);
 		}
 
@@ -193,33 +193,33 @@ public class FriendManagementController {
 	 * @param subscriber
 	 * @param result
 	 * @return
-	 * @throws ResourceNotFoundException
+	 * @throws FriendManagementAPIResourceNotFound
 	 */
 
 	@RequestMapping(value = "/unsubscribe", method = RequestMethod.POST)
-	public ResponseEntity<FriendManagementValidation> unSubscribeFriend(
+	public ResponseEntity<FriendManagementValidator> unSubscribeFriend(
 			@Valid @RequestBody com.capgemini.model.Subscriber subscriber, BindingResult result)
-			throws ResourceNotFoundException {
+			throws FriendManagementAPIResourceNotFound {
 		// Validation
-		ResponseEntity<FriendManagementValidation> unsubscribeFriendResponseEntity = null;
+		ResponseEntity<FriendManagementValidator> unsubscribeFriendResponseEntity = null;
 		boolean isValid = validateInput(subscriber);
 		LOG.info("::: Caling unSubscribeFriend () ::");
 		if (!isValid) {
-			unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(HttpStatus.BAD_REQUEST);
+			unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(HttpStatus.BAD_REQUEST);
 		}
 
-		FriendManagementValidation fmv = null;
+		FriendManagementValidator fmv = null;
 		try {
 			fmv = frndMngtServc.unSubscribeTargetFriend(subscriber);
 			if (fmv.getStatus() == SUCCESS_STATUS) {
-				unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv, HttpStatus.OK);
+				unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(fmv, HttpStatus.OK);
 			} else {
-				unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv,
+				unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(fmv,
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
 			LOG.debug(e.getLocalizedMessage());
-			unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidation>(fmv,
+			unsubscribeFriendResponseEntity = new ResponseEntity<FriendManagementValidator>(fmv,
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -231,13 +231,13 @@ public class FriendManagementController {
 	 * @param emailsList
 	 * @param result
 	 * @return
-	 * @throws ResourceNotFoundException
+	 * @throws FriendManagementAPIResourceNotFound
 	 */
 
 	@RequestMapping(value = "/friends/updatelist", method = RequestMethod.POST)
 	public ResponseEntity<EmailsListRecievesUpdatesResponse> emailListRecievesupdates(
 			@Valid @RequestBody com.capgemini.model.EmailsListRecievesUpdatesRequest emailsList, BindingResult result)
-			throws ResourceNotFoundException {
+			throws FriendManagementAPIResourceNotFound {
 
 		LOG.info("::  Calling emailListRecievesupdates ::");
 
@@ -269,18 +269,18 @@ public class FriendManagementController {
 	 * @param result
 	 * @return
 	 */
-	private ResponseEntity<FriendManagementValidation> handleValidation(BindingResult result) {
+	private ResponseEntity<FriendManagementValidator> handleValidation(BindingResult result) {
 		fmError.setStatus("Failed");
 		if (result.getFieldError("requestor") != null && result.getFieldError("target") != null) {
-			fmError.setErrorDescription(result.getFieldError("requestor").getDefaultMessage() + " "
+			fmError.setDescription(result.getFieldError("requestor").getDefaultMessage() + " "
 					+ result.getFieldError("target").getDefaultMessage());
 		} else if (result.getFieldError("target") != null) {
-			fmError.setErrorDescription(result.getFieldError("target").getDefaultMessage());
+			fmError.setDescription(result.getFieldError("target").getDefaultMessage());
 		} else {
-			fmError.setErrorDescription(result.getFieldError("requestor").getDefaultMessage());
+			fmError.setDescription(result.getFieldError("requestor").getDefaultMessage());
 
 		}
-		return new ResponseEntity<FriendManagementValidation>(fmError, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<FriendManagementValidator>(fmError, HttpStatus.BAD_REQUEST);
 
 	}
 

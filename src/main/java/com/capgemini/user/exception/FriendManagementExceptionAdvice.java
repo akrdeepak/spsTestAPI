@@ -1,4 +1,4 @@
-package com.capgemini.exceptionhandling;
+package com.capgemini.user.exception;
 
 import java.util.Collections;
 import java.util.Map;
@@ -17,14 +17,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
-public class ExceptionHandlerControllerAdvice {
+public class FriendManagementExceptionAdvice {
 
-	@ExceptionHandler(ResourceNotFoundException.class)
+	@ExceptionHandler(FriendManagementAPIResourceNotFound.class)
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
-	public @ResponseBody ExceptionResponse handleResourceNotFound(final ResourceNotFoundException exception,
+	public @ResponseBody FriendManagementException handleResourceNotFound(final FriendManagementAPIResourceNotFound exception,
 			final HttpServletRequest request) {
 
-		final ExceptionResponse error = new ExceptionResponse();
+		final FriendManagementException error = new FriendManagementException();
 		error.setErrorMessage(exception.getMessage());
 		error.callerURL(request.getRequestURI());
 
@@ -33,10 +33,10 @@ public class ExceptionHandlerControllerAdvice {
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-	public @ResponseBody ExceptionResponse handleException(final Exception exception,
+	public @ResponseBody FriendManagementException handleException(final Exception exception,
 			final HttpServletRequest request) {
 
-		final ExceptionResponse error = new ExceptionResponse();
+		final FriendManagementException error = new FriendManagementException();
 		error.setErrorMessage(exception.getMessage());
 		error.callerURL(request.getRequestURI());
 

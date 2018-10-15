@@ -3,7 +3,7 @@ package com.capgemini.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserFriendsListResponse {
+public class FriendsStatus {
 	
 	private String status;
 	private int count;

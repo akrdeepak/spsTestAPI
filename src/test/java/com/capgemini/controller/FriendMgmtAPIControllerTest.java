@@ -18,35 +18,35 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.validation.BindingResult;
 
-import com.capgemini.exceptionhandling.ResourceNotFoundException;
 import com.capgemini.model.CommonFriendsListRequest;
 import com.capgemini.model.CommonFriendsListResponse;
 import com.capgemini.model.FriendListRequest;
 import com.capgemini.model.Subscriber;
-import com.capgemini.model.UserFriendsListResponse;
-import com.capgemini.model.UserRequest;
-import com.capgemini.repository.FriendMangmtRepo;
+import com.capgemini.model.FriendsStatus;
+import com.capgemini.model.AddFriend;
+import com.capgemini.repository.FriendMangementRepository;
 import com.capgemini.service.FriendMangmtService;
-import com.capgemini.validation.FriendManagementValidation;
+import com.capgemini.user.exception.FriendManagementAPIResourceNotFound;
+import com.capgemini.validation.FriendManagementValidator;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class FriendManagementControllerTest {
+public class FriendMgmtAPIControllerTest {
 
-	FriendManagementController friendManagementController;
+	FriendMgmtAPIController friendManagementController;
 	private Subscriber subscriber;
-	private UserRequest userRequest;
+	private AddFriend userRequest;
 	private FriendListRequest friendListRequest;
 	private CommonFriendsListRequest commonFriendsListRequest;
 	private CommonFriendsListResponse commonFriendsListResponse;
-	private UserFriendsListResponse userFriendsListResponse;
+	private FriendsStatus userFriendsListResponse;
 	@Mock
 	private BindingResult result;
-	FriendManagementValidation fmError;
+	FriendManagementValidator fmError;
 	@Mock
 	JdbcTemplate jdbcTemplate;
 	@Mock
-	FriendMangmtRepo friendMangmtRepo;
+	FriendMangementRepository friendMangmtRepo;
 	@InjectMocks
 	FriendMangmtService frndMngtServc;
 	@Mock
@@ -55,81 +55,81 @@ public class FriendManagementControllerTest {
 	@Before
 	public void setUp() throws Exception {
 		subscriber = new Subscriber();
-		userRequest = new UserRequest();
-		fmError = new FriendManagementValidation();
-		friendManagementController = new FriendManagementController(frndMngtServc, fmError);
+		userRequest = new AddFriend();
+		fmError = new FriendManagementValidator();
+		friendManagementController = new FriendMgmtAPIController(frndMngtServc, fmError);
 		friendListRequest = new FriendListRequest();
 		commonFriendsListRequest = new CommonFriendsListRequest();
 		commonFriendsListResponse = new CommonFriendsListResponse();
-		userFriendsListResponse = new UserFriendsListResponse();
+		userFriendsListResponse = new FriendsStatus();
 	}
 
 	@Test
-	public void test_null_requestor_unsubscribe() throws ResourceNotFoundException {
+	public void testRequestorUnsubscribeWithNull() throws FriendManagementAPIResourceNotFound {
 		subscriber.setTarget("ravi@gmail.com");
 		subscriber.setRequestor(null);
 		when(this.result.hasErrors()).thenReturn(false);
-		ResponseEntity<FriendManagementValidation> responseEntity = friendManagementController
+		ResponseEntity<FriendManagementValidator> responseEntity = friendManagementController
 				.unSubscribeFriend(subscriber, result);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
-	public void test_null_subscriber_unsubscribe() throws ResourceNotFoundException {
+	public void testSubscriberUnsubscribeWithNull() throws FriendManagementAPIResourceNotFound {
 		when(this.result.hasErrors()).thenReturn(false);
 		subscriber.setRequestor("ravi@gmail.com");
 		subscriber.setTarget(null);
-		ResponseEntity<FriendManagementValidation> responseEntity = friendManagementController
+		ResponseEntity<FriendManagementValidator> responseEntity = friendManagementController
 				.unSubscribeFriend(subscriber, result);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
-	public void test_samesubreq_unsubscribe() throws ResourceNotFoundException {
+	public void testSamesubreqUnsubscribe() throws FriendManagementAPIResourceNotFound {
 		subscriber.setRequestor("ravi@gmail.com");
 		subscriber.setTarget("ravi@gmail.com");
 		when(this.result.hasErrors()).thenReturn(false);
-		ResponseEntity<FriendManagementValidation> responseEntity = friendManagementController
+		ResponseEntity<FriendManagementValidator> responseEntity = friendManagementController
 				.unSubscribeFriend(subscriber, result);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.BAD_REQUEST);
 	}
 
 	@Test
-	public void test_unSubscribe_success() throws ResourceNotFoundException {
+	public void testUnSubscribeHappy() throws FriendManagementAPIResourceNotFound {
 		subscriber.setRequestor("ravi@gmail.com");
 		subscriber.setTarget("arvi@gmail.com");
 		when(this.result.hasErrors()).thenReturn(false);
 		// List<Object> obj = new ArrayList<Object>();
 		fmError.setStatus("Success");
 		when(frndMngtServc.unSubscribeTargetFriend(subscriber)).thenReturn(fmError);
-		ResponseEntity<FriendManagementValidation> responseEntity = friendManagementController
+		ResponseEntity<FriendManagementValidator> responseEntity = friendManagementController
 				.unSubscribeFriend(subscriber, result);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 	}
 
 	@Test
-	public void test_addFriend_success() throws ResourceNotFoundException {
+	public void testAddFriendHappyFlow() throws FriendManagementAPIResourceNotFound {
 		fmError.setStatus("Success");
 		userRequest.setRequestor("raga@gmail.com");
 		userRequest.setTarget("raju@gmail.com");
 		when(frndMngtServc.addNewFriendConnection(userRequest)).thenReturn(fmError);
-		ResponseEntity<FriendManagementValidation> responseEntity = friendManagementController
+		ResponseEntity<FriendManagementValidator> responseEntity = friendManagementController
 				.newFriendConnection(userRequest, bindingResult);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 	}
 
 	@Test
-	public void test_getFriendList_success() throws ResourceNotFoundException {
+	public void testGetFriendListHappyFlow() throws FriendManagementAPIResourceNotFound {
 		friendListRequest.setEmail("ranga@gmail.com");
 		userFriendsListResponse.setStatus("Success");
 		when(frndMngtServc.getFriendList(friendListRequest)).thenReturn(userFriendsListResponse);
-		ResponseEntity<UserFriendsListResponse> responseEntity = friendManagementController
+		ResponseEntity<FriendsStatus> responseEntity = friendManagementController
 				.getFriendList(friendListRequest, bindingResult);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 	}
 
 	@Test
-	public void test_getCommonFriendList_success() throws ResourceNotFoundException {
+	public void testGetCommonFriendListHappyFlow() throws FriendManagementAPIResourceNotFound {
 		List<String> friends = new ArrayList<String>();
 		friends.add("ranga@gmail.com");
 		friends.add("ranga1@gmail.com");
@@ -143,12 +143,12 @@ public class FriendManagementControllerTest {
 	}
 
 	@Test
-	public void test_subscribe_success() throws ResourceNotFoundException {
+	public void testSubscribeHappyFlow() throws FriendManagementAPIResourceNotFound {
 		subscriber.setRequestor("ravi@gmail.com");
 		subscriber.setTarget("arvi@gmail.com");
 		fmError.setStatus("Success");
 		when(frndMngtServc.subscribeTargetFriend(subscriber)).thenReturn(fmError);
-		ResponseEntity<FriendManagementValidation> responseEntity = friendManagementController
+		ResponseEntity<FriendManagementValidator> responseEntity = friendManagementController
 				.subscribeFriend(subscriber, bindingResult);
 		assertThat(responseEntity.getStatusCode()).isEqualByComparingTo(HttpStatus.OK);
 	}

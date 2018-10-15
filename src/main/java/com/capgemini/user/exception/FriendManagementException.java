@@ -1,6 +1,6 @@
-package com.capgemini.exceptionhandling;
+package com.capgemini.user.exception;
 
-public class ExceptionResponse {
+public class FriendManagementException {
 
 	private String errorMessage;
 	private String requestedURI;

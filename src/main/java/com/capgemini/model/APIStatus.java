@@ -2,7 +2,7 @@ package com.capgemini.model;
 
 //import lombok.Data;
 //@Data
-public class BaseResponse {
+public class APIStatus {
 	private String status;
 
 	public String getStatus() {

@@ -5,7 +5,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class UserRequest {
+public class AddFriend {
 
 	@NotNull
 	@NotEmpty(message = "{requestorEmail.notempty}")
