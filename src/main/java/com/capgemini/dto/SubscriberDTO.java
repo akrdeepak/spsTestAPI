@@ -1,11 +1,11 @@
-package com.capgemini.model;
+package com.capgemini.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class AddFriend {
+public class SubscriberDTO {
 
 	@NotNull
 	@NotEmpty(message = "{requestorEmail.notempty}")
@@ -18,6 +18,10 @@ public class AddFriend {
 	@Email(message = "{targetEmail.valid}")
 	@Size(max = 30, message = "{targetEmail.size}")
 	private String target;
+
+	public SubscriberDTO() {
+
+	}
 
 	public String getRequestor() {
 		return requestor;

@@ -1,9 +1,9 @@
-package com.capgemini.model;
+package com.capgemini.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommonFriendsListResponse {
+public class CommonFriendsListResponseDTO {
 	private String status;
 	private int count;
 	public List<String> friends = new ArrayList<String>();

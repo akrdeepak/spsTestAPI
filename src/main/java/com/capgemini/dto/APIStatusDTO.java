@@ -1,8 +1,8 @@
-package com.capgemini.model;
+package com.capgemini.dto;
 
 //import lombok.Data;
 //@Data
-public class APIStatus {
+public class APIStatusDTO {
 	private String status;
 
 	public String getStatus() {

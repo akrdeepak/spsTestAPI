@@ -1,4 +1,4 @@
-package com.capgemini.model;
+package com.capgemini.dto;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class CommonFriendsListRequest {
+public class CommonFriendsListRequestDTO {
 
 	@NotNull
 	@NotEmpty

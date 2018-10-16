@@ -1,11 +1,11 @@
-package com.capgemini.model;
+package com.capgemini.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-public class EmailsListRecievesUpdatesRequest {
+public class EmailsListRecievesUpdatesRequestDTO {
 
 	@NotNull
 	@NotEmpty(message = "{senderEmail.notempty}")
