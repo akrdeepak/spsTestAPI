@@ -135,21 +135,23 @@ Swagger UI is configured for the app and it is available https://sps-demo-new.cf
 The Database is pre-populated with 4 persons for testing purpose, also the data can be found from the SQL script file which is placed inside the code repository. I have used in memory database (H2).
 Below are table snap shots for this development task:
 
+
+
 		## A. Table Name: FRIENDMANAGEMENT
 		
-		id					   int		   PK
-		EMAIL				   Varchar	Null
-		FRIEND_LIST			VARCHAR	Null
-		SUBSCRIBER			VARCHAR	Null
-		SUBSCRIBEDBY		   VARCHAR	Null
-		UPDATED				VARCHAR	Null
-		UPDATED_TIMESTAMP	DATE	   Not Null
+		id | int | PK
+		EMAIL | Varchar | Null
+		FRIEND_LIST | VARCHAR | Null
+		SUBSCRIBER | VARCHAR |  Null
+		SUBSCRIBEDBY	 | VARCHAR | Null
+		UPDATED | VARCHAR | Null
+		UPDATED_TIMESTAMP | DATE | Not Null
 		
 		## B.Table Name: UNSUBSCRIBE
 		
-		ID							INT			PK
-		REQUESTOR_EMAIL			VARCHAR	Null
-		TARGET_EMAIL				VARCHAR	Null
-		SUBSCRIPTION_STATUS	VARCHAR	Null
+		ID | INT | PK
+		REQUESTOR_EMAIL | 	VARCHAR | Null
+		TARGET_EMAIL | VARCHAR | Null
+		SUBSCRIPTION_STATUS | VARCHAR | Null
 
 
